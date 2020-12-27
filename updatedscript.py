@@ -1,6 +1,7 @@
 import json
 import time
 import boto3
+import re
 from flask import Flask,jsonify,request
 
 client = boto3.client('organizations')
@@ -163,13 +164,15 @@ def create_account():
   if Length_of_Emails == Length_of_Names:
     for mail,name in zip(list_of_Emails,list_of_Names):
       for awsmail in Existing_emails:
-        if mail == awsmail:
-          status = "Invalid email"
-          Invalid_mail = mail
-          return("The email",Invalid_mail,"already exist!")
-          break
+        mailstatus = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", mail))
+        if mailstatus == True:
+          if mail == awsmail:
+            status = "Invalid email"
+            return("The email",mail,"already exist!")
+          else:
+            status = "Valid email"
         else:
-          status = "Valid email"
+          return("The email format is Invalid for",mail)
       if status == "Valid email":
         cresponse = client.create_account(
           Email= mail,
@@ -177,9 +180,8 @@ def create_account():
           IamUserAccessToBilling='ALLOW'
         )
         return("Account created successfully")
-      
   else:
     return("Enter the respective names for the given Email")
-    time.sleep(10)
+    
 
 
