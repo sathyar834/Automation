@@ -164,21 +164,22 @@ def create_account():
   if Length_of_Emails == Length_of_Names:
     for mail,name in zip(list_of_Emails,list_of_Names):
       for awsmail in Existing_emails:
+        print(Existing_emails)
         mailstatus = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", mail))
         if mailstatus == True:
           if mail == awsmail:
             status = "Invalid email"
-            return("The email",mail,"already exist!")
+            return("The email already exist!")
           else:
             status = "Valid email"
         else:
-          return("The email format is Invalid for",mail)
+          return("The email format is Invalid")
       if status == "Valid email":
-        cresponse = client.create_account(
-          Email= mail,
-          AccountName= name,
-          IamUserAccessToBilling='ALLOW'
-        )
+        # cresponse = client.create_account(
+        #   Email= mail,
+        #   AccountName= name,
+        #   IamUserAccessToBilling='ALLOW'
+        # )
         return("Account created successfully")
   else:
     return("Enter the respective names for the given Email")
