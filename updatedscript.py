@@ -118,7 +118,7 @@ def list_accounts():
   resmore = {Namelistmore[i]: Idslistmore[i] for i in range(len(Namelistmore))}
   # print(resmore)
   finaldict = dict(list(res.items()) + list(resmore.items()))
-  print(finaldict)
+  # print(finaldict)
   return{"Accounts":finaldict}
   # keys = {k:finaldict[k] for k in (finaldict.keys() & list_of_Names)}
   # print(keys)
@@ -164,7 +164,6 @@ def create_account():
   if Length_of_Emails == Length_of_Names:
     for mail,name in zip(list_of_Emails,list_of_Names):
       for awsmail in Existing_emails:
-        print(Existing_emails)
         mailstatus = bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", mail))
         if mailstatus == True:
           if mail == awsmail:
@@ -175,11 +174,11 @@ def create_account():
         else:
           return("The email format is Invalid")
       if status == "Valid email":
-        # cresponse = client.create_account(
-        #   Email= mail,
-        #   AccountName= name,
-        #   IamUserAccessToBilling='ALLOW'
-        # )
+        cresponse = client.create_account(
+          Email= mail,
+          AccountName= name,
+          IamUserAccessToBilling='ALLOW'
+        )
         return("Account created successfully")
   else:
     return("Enter the respective names for the given Email")

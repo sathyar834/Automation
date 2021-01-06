@@ -17,7 +17,6 @@ def create_ou():
   create_organizational_units()
   return("OU Succesfully Created")
 
-
 @app.route("/listou",methods=["GET"])
 def list_ou():
   OUdict = list_organizational_units()
